@@ -59,7 +59,7 @@ More parallel sessions: raise `SE_NODE_MAX_SESSIONS` on a node (each Chrome or F
 
 **Resources**
 
-Measured on Railway: hub about 0.25 GB, each idle node about 0.15 GB; a running Chrome or Firefox session adds roughly 0.3–0.6 GB to its node. Trial's 1 GB per service fits one session per node; use Hobby for more. Cost is roughly $5–8/month idle plus the RAM and CPU your sessions use.
+Measured on Railway: hub about 0.2–0.25 GB, Chrome node about 0.25–0.3 GB and Firefox node about 0.15 GB while idle; a running session adds roughly 0.3–0.6 GB to its node (the Firefox node showed 0.7 GB right after loading a Wikipedia article). Trial's 1 GB per service fits one session per node; use Hobby for more. Cost is roughly $5–8/month idle plus the RAM and CPU your sessions use.
 
 **Fair use**
 

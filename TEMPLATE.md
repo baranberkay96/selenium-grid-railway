@@ -29,9 +29,9 @@ Node variables: event bus host/ports (hub reference), `SE_REGISTRATION_SECRET` (
 
 | Service | Idle RAM | Typical RAM | CPU |
 |---|---|---|---|
-| Selenium Hub | ≈0.25 GB (measured) | 0.3–0.5 GB | low |
-| Chrome Node | ≈0.15 GB (measured) | +0.3–0.6 GB per session | 0.5–1 vCPU per active session |
-| Firefox Node | ≈0.15 GB (measured) | +0.3–0.6 GB per session | 0.5–1 vCPU per active session |
+| Selenium Hub | ≈0.18–0.24 GB (measured) | 0.3–0.5 GB | low |
+| Chrome Node | ≈0.24–0.32 GB (measured) | +0.3–0.6 GB per session | 0.5–1 vCPU per active session |
+| Firefox Node | ≈0.15 GB (measured) | 0.7 GB measured right after one session | 0.5–1 vCPU per active session |
 
 Estimated: $5–8/month idle, more with active sessions. Minimum plan: Trial (one session per node); Hobby for parallel sessions.
 
@@ -43,4 +43,4 @@ Estimated: $5–8/month idle, more with active sessions. Minimum plan: Trial (on
 
 ## Open questions
 
-- Railway's `/dev/shm` size for Chrome; see the round-13 report for what was measured.
+- Railway's `/dev/shm` size was not measured; Chrome and Firefox loaded and screenshotted a large Wikipedia article without crashes. Very heavy pages may need `--disable-dev-shm-usage` in the client's ChromeOptions.
