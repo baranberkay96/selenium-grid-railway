@@ -1,5 +1,7 @@
 # Deploy and Host Selenium Grid with Railway
 
+[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/selenium-grid-454-chrome-firefox-passwor?referralCode=20H68q)
+
 Selenium Grid 4 on Railway: a hub with a public HTTPS endpoint that requires a login, and a Chrome node and a Firefox node on the private network. Point your WebDriver tests or scrapers-for-your-own-sites at one URL and the hub routes each session to a matching browser.
 
 ## About Hosting Selenium Grid
