@@ -1,0 +1,284 @@
+{
+ "name": "Selenium Grid 4.54 (Chrome + Firefox, Password)",
+ "idSeed": "Selenium Grid 4.54 (Chrome + Firefox, Password) / 2026-11-24",
+ "description": "Selenium Grid 4 hub with Chrome and Firefox nodes, behind a login.",
+ "category": "Other",
+ "tags": [
+  "selenium",
+  "selenium-grid",
+  "webdriver",
+  "chrome",
+  "firefox",
+  "testing",
+  "automation",
+  "e2e"
+ ],
+ "image": "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/selenium.svg",
+ "upstream": {
+  "repo": "SeleniumHQ/docker-selenium",
+  "version": "4.54.0-20261123",
+  "selenium": "4.54.0",
+  "checked": "2026-11-24"
+ },
+ "services": {
+  "Selenium Hub": {
+   "icon": "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/selenium.svg",
+   "source": {
+    "repo": "baranberkay96/selenium-grid-railway",
+    "rootDirectory": "/services/hub"
+   },
+   "startCommand": null,
+   "preDeployCommand": null,
+   "healthcheckPath": "/readyz",
+   "healthcheckTimeout": 300,
+   "restartPolicyType": "ALWAYS",
+   "numReplicas": 1,
+   "cronSchedule": null,
+   "publicDomain": true,
+   "targetPort": 4444,
+   "tcpProxy": null,
+   "volume": null,
+   "variables": {
+    "SE_ROUTER_USERNAME": {
+     "defaultValue": "selenium",
+     "description": "Grid login user (HTTP basic auth on every WebDriver and UI request).",
+     "required": false
+    },
+    "SE_ROUTER_PASSWORD": {
+     "defaultValue": "${{secret(32, \"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789\")}}",
+     "description": "Grid login password (12-128 characters). Empty or short locks the grid.",
+     "required": false
+    },
+    "SE_REGISTRATION_SECRET": {
+     "defaultValue": "${{secret(32, \"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789\")}}",
+     "description": "Shared secret nodes need to register with the hub.",
+     "required": false
+    },
+    "SE_EXTERNAL_URL": {
+     "defaultValue": "https://${{RAILWAY_PUBLIC_DOMAIN}}",
+     "description": "Public URL the hub reports in session details.",
+     "required": false
+    },
+    "PORT": {
+     "defaultValue": "4444",
+     "description": "Hub port; the public domain points here.",
+     "required": false
+    },
+    "SE_SESSION_REQUEST_TIMEOUT": {
+     "defaultValue": "300",
+     "description": "Seconds a new-session request waits in the queue for a free browser.",
+     "required": false
+    },
+    "SE_ENABLE_TRACING": {
+     "defaultValue": "false",
+     "description": "OpenTelemetry tracing; off (no collector in this template).",
+     "required": false
+    },
+    "SE_JAVA_OPTS": {
+     "defaultValue": "-Xmx512m",
+     "description": "JVM options of the hub.",
+     "required": false
+    }
+   }
+  },
+  "Chrome Node": {
+   "icon": "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/selenium.svg",
+   "source": {
+    "image": "selenium/node-chrome:4.54.0-20261123@sha256:318041362c34d4ff3b050d8adb114340677ee20dbf32f07591b9004f584eda73"
+   },
+   "startCommand": null,
+   "preDeployCommand": null,
+   "healthcheckPath": "/status",
+   "healthcheckTimeout": 600,
+   "restartPolicyType": "ALWAYS",
+   "numReplicas": 1,
+   "cronSchedule": null,
+   "publicDomain": false,
+   "targetPort": null,
+   "tcpProxy": null,
+   "volume": null,
+   "variables": {
+    "SE_EVENT_BUS_HOST": {
+     "defaultValue": "${{Selenium Hub.RAILWAY_PRIVATE_DOMAIN}}",
+     "description": "Hub address on the private network (event bus).",
+     "required": false
+    },
+    "SE_EVENT_BUS_PUBLISH_PORT": {
+     "defaultValue": "4442",
+     "description": "Hub event bus publish port.",
+     "required": false
+    },
+    "SE_EVENT_BUS_SUBSCRIBE_PORT": {
+     "defaultValue": "4443",
+     "description": "Hub event bus subscribe port.",
+     "required": false
+    },
+    "SE_REGISTRATION_SECRET": {
+     "defaultValue": "${{Selenium Hub.SE_REGISTRATION_SECRET}}",
+     "description": "Must match the hub's secret, or the node cannot register.",
+     "required": false
+    },
+    "SE_NODE_HOST": {
+     "defaultValue": "${{RAILWAY_PRIVATE_DOMAIN}}",
+     "description": "Address the hub uses to reach this node (private network).",
+     "required": false
+    },
+    "SE_NODE_PORT": {
+     "defaultValue": "5555",
+     "description": "Node port (private).",
+     "required": false
+    },
+    "PORT": {
+     "defaultValue": "5555",
+     "description": "Port of the node's /status endpoint for Railway's healthcheck.",
+     "required": false
+    },
+    "SE_NODE_MAX_SESSIONS": {
+     "defaultValue": "1",
+     "description": "Parallel Chrome sessions on this node. Each needs about 0.3-0.6 GB RAM more.",
+     "required": false
+    },
+    "SE_NODE_OVERRIDE_MAX_SESSIONS": {
+     "defaultValue": "true",
+     "description": "Allow SE_NODE_MAX_SESSIONS above the CPU count (Railway shows the host's CPUs).",
+     "required": false
+    },
+    "SE_NODE_SESSION_TIMEOUT": {
+     "defaultValue": "300",
+     "description": "Seconds without commands before an abandoned session is closed.",
+     "required": false
+    },
+    "SE_SCREEN_WIDTH": {
+     "defaultValue": "1920",
+     "description": "Virtual screen width for non-headless sessions.",
+     "required": false
+    },
+    "SE_SCREEN_HEIGHT": {
+     "defaultValue": "1080",
+     "description": "Virtual screen height for non-headless sessions.",
+     "required": false
+    },
+    "SE_START_VNC": {
+     "defaultValue": "false",
+     "description": "VNC viewing of sessions; off (no public port on Railway, saves RAM).",
+     "required": false
+    },
+    "SE_START_NO_VNC": {
+     "defaultValue": "false",
+     "description": "noVNC web viewer; off.",
+     "required": false
+    },
+    "SE_ENABLE_TRACING": {
+     "defaultValue": "false",
+     "description": "OpenTelemetry tracing; off (no collector in this template).",
+     "required": false
+    },
+    "SE_JAVA_OPTS": {
+     "defaultValue": "-Xmx256m",
+     "description": "JVM options of the node process (the browser runs outside the JVM).",
+     "required": false
+    }
+   }
+  },
+  "Firefox Node": {
+   "icon": "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/selenium.svg",
+   "source": {
+    "image": "selenium/node-firefox:4.54.0-20261123@sha256:2c2dea3ffa2fd4af557a1b8fbdb9c4bc298903b0f6a5a698897d5f292cd1f950"
+   },
+   "startCommand": null,
+   "preDeployCommand": null,
+   "healthcheckPath": "/status",
+   "healthcheckTimeout": 600,
+   "restartPolicyType": "ALWAYS",
+   "numReplicas": 1,
+   "cronSchedule": null,
+   "publicDomain": false,
+   "targetPort": null,
+   "tcpProxy": null,
+   "volume": null,
+   "variables": {
+    "SE_EVENT_BUS_HOST": {
+     "defaultValue": "${{Selenium Hub.RAILWAY_PRIVATE_DOMAIN}}",
+     "description": "Hub address on the private network (event bus).",
+     "required": false
+    },
+    "SE_EVENT_BUS_PUBLISH_PORT": {
+     "defaultValue": "4442",
+     "description": "Hub event bus publish port.",
+     "required": false
+    },
+    "SE_EVENT_BUS_SUBSCRIBE_PORT": {
+     "defaultValue": "4443",
+     "description": "Hub event bus subscribe port.",
+     "required": false
+    },
+    "SE_REGISTRATION_SECRET": {
+     "defaultValue": "${{Selenium Hub.SE_REGISTRATION_SECRET}}",
+     "description": "Must match the hub's secret, or the node cannot register.",
+     "required": false
+    },
+    "SE_NODE_HOST": {
+     "defaultValue": "${{RAILWAY_PRIVATE_DOMAIN}}",
+     "description": "Address the hub uses to reach this node (private network).",
+     "required": false
+    },
+    "SE_NODE_PORT": {
+     "defaultValue": "5555",
+     "description": "Node port (private).",
+     "required": false
+    },
+    "PORT": {
+     "defaultValue": "5555",
+     "description": "Port of the node's /status endpoint for Railway's healthcheck.",
+     "required": false
+    },
+    "SE_NODE_MAX_SESSIONS": {
+     "defaultValue": "1",
+     "description": "Parallel Firefox sessions on this node. Each needs about 0.3-0.6 GB RAM more.",
+     "required": false
+    },
+    "SE_NODE_OVERRIDE_MAX_SESSIONS": {
+     "defaultValue": "true",
+     "description": "Allow SE_NODE_MAX_SESSIONS above the CPU count (Railway shows the host's CPUs).",
+     "required": false
+    },
+    "SE_NODE_SESSION_TIMEOUT": {
+     "defaultValue": "300",
+     "description": "Seconds without commands before an abandoned session is closed.",
+     "required": false
+    },
+    "SE_SCREEN_WIDTH": {
+     "defaultValue": "1920",
+     "description": "Virtual screen width for non-headless sessions.",
+     "required": false
+    },
+    "SE_SCREEN_HEIGHT": {
+     "defaultValue": "1080",
+     "description": "Virtual screen height for non-headless sessions.",
+     "required": false
+    },
+    "SE_START_VNC": {
+     "defaultValue": "false",
+     "description": "VNC viewing of sessions; off (no public port on Railway, saves RAM).",
+     "required": false
+    },
+    "SE_START_NO_VNC": {
+     "defaultValue": "false",
+     "description": "noVNC web viewer; off.",
+     "required": false
+    },
+    "SE_ENABLE_TRACING": {
+     "defaultValue": "false",
+     "description": "OpenTelemetry tracing; off (no collector in this template).",
+     "required": false
+    },
+    "SE_JAVA_OPTS": {
+     "defaultValue": "-Xmx256m",
+     "description": "JVM options of the node process (the browser runs outside the JVM).",
+     "required": false
+    }
+   }
+  }
+ },
+ "buckets": []
+}
